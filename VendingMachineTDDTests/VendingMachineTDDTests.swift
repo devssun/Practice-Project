@@ -20,6 +20,15 @@ class Drink {
     }
 }
 
+class Coin {
+    enum CoinUnit: Int {
+        case krw10 = 10
+        case krw50 = 50
+        case krw100 = 100
+        case krw500 = 500
+    }
+}
+
 class VendingMachine {
     enum InsertError: Error {
         case invalidation
@@ -29,11 +38,11 @@ class VendingMachine {
         case notEnoughMoney
     }
     
-    private var totalMoney: Int = 0
+    private var deposit: Int = 0
     
     func insertMoney(_ input: Int) throws {
         try validateInsertMoney(input)
-        totalMoney += input
+        deposit += input
     }
     
     func validateInsertMoney(_ input: Int) throws {
@@ -43,21 +52,21 @@ class VendingMachine {
     }
     
     func getTotalMoney() -> Int {
-        return totalMoney
+        return deposit
     }
     
     func getDrink(_ drink: Drink) throws {
-        if drink.getPrice() > totalMoney {
+        if drink.getPrice() > deposit {
             throw BuyError.notEnoughMoney
         }
-        totalMoney -= drink.getPrice()
+        deposit -= drink.getPrice()
     }
     
     private func calculateCointCount(_ base: Int) -> Int {
         var totalCoinCount: Int = 0
-        if totalMoney / base > 0 {
-            totalCoinCount += Int(totalMoney / base)
-            totalMoney -= (Int(totalMoney / base) * base)
+        if deposit / base > 0 {
+            totalCoinCount += Int(deposit / base)
+            deposit -= (Int(deposit / base) * base)
         }
         return totalCoinCount
     }
