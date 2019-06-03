@@ -8,6 +8,18 @@
 
 import XCTest
 
+class Drink {
+    private var price: Int = 0
+    
+    init(_ price: Int) {
+        self.price = price
+    }
+    
+    func getPrice() -> Int {
+        return price
+    }
+}
+
 class VendingMachine {
     enum InsertError: Error {
         case invalidation
@@ -34,11 +46,11 @@ class VendingMachine {
         return totalMoney
     }
     
-    func getDrink(_ input: Int) throws {
-        if input > totalMoney {
+    func getDrink(_ drink: Drink) throws {
+        if drink.getPrice() > totalMoney {
             throw BuyError.notEnoughMoney
         }
-        totalMoney -= input
+        totalMoney -= drink.getPrice()
     }
     
     private func calculateCointCount(_ base: Int) -> Int {
@@ -82,7 +94,7 @@ class VendingMachineTDDTests: XCTestCase {
         XCTAssertNoThrow(try vendingMachine.insertMoney(500))
         XCTAssertNoThrow(try vendingMachine.insertMoney(100))
         XCTAssertNoThrow(try vendingMachine.insertMoney(100))
-        XCTAssertNoThrow(try vendingMachine.getDrink(350))
+        XCTAssertNoThrow(try vendingMachine.getDrink(Drink(350)))
         
         XCTAssertEqual(vendingMachine.getCoinsCount(500), 0)
         XCTAssertEqual(vendingMachine.getCoinsCount(100), 3)
