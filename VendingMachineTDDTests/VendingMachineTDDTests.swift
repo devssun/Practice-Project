@@ -41,14 +41,10 @@ class VendingMachine {
     private var deposit: Int = 0
     
     func insertMoney(_ input: Int) throws {
-        try validateInsertMoney(input)
-        deposit += input
-    }
-    
-    func validateInsertMoney(_ input: Int) throws {
-        if !(input == 10 || input == 50 || input == 100 || input == 500 || input == 1000) {
+        guard Coin.CoinUnit(rawValue: input) != nil else {
             throw InsertError.invalidation
         }
+        deposit += input
     }
     
     func getTotalMoney() -> Int {
