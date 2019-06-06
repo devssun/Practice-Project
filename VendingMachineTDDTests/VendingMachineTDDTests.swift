@@ -8,27 +8,67 @@
 
 import XCTest
 
+/// 음료 클래스
 class Drink {
+    /// 금액
     private var price: Int = 0
     
     init(_ price: Int) {
         self.price = price
     }
     
+    /// 선택한 음료 금액 리턴
     func getPrice() -> Int {
         return price
     }
 }
 
+/// 코인 클래스
 class Coin {
+    /// 동전 단위
     enum CoinUnit: Int {
         case krw10 = 10
         case krw50 = 50
         case krw100 = 100
         case krw500 = 500
     }
+    
+    /// 전체 금액
+    var deposit: Int = 0
+    
+    /// 동전 투입
+    /// - parameter input: 동전 단위
+    func insertCoin(_ input: CoinUnit) {
+        self.deposit += input.rawValue
+    }
+    
+    /// 음료 구매
+    /// - parameter drink: 음료
+    func getDrink(_ drink: Drink) {
+        self.deposit -= drink.getPrice()
+    }
+    
+    /// 전체 금액
+    /// - Returns: 전체 금액
+    func getTotalCoin() -> Int {
+        return deposit
+    }
+    
+    /// 동전 단위 갯수 구하기
+    /// - parameter base: 가져올 동전
+    /// - Returns: 동전 개수
+    func calculateCoinCount(_ base: CoinUnit) -> Int {
+        var totalCoinCount: Int = 0
+        let baseCoin = base.rawValue
+        if deposit / baseCoin > 0 {
+            totalCoinCount += Int(deposit / baseCoin)
+            deposit -= (Int(deposit / baseCoin) * baseCoin)
+        }
+        return totalCoinCount
+    }
 }
 
+/// 자판기 클래스
 class VendingMachine {
     enum InsertError: Error {
         case invalidation
@@ -39,36 +79,31 @@ class VendingMachine {
     }
     
     private var deposit: Int = 0
+    private var coin = Coin()
     
     func insertMoney(_ input: Int) throws {
-        guard Coin.CoinUnit(rawValue: input) != nil else {
+        guard let insertCoin = Coin.CoinUnit(rawValue: input) else {
             throw InsertError.invalidation
         }
-        deposit += input
+        coin.insertCoin(insertCoin)
     }
     
     func getTotalMoney() -> Int {
-        return deposit
+        return coin.getTotalCoin()
     }
     
     func getDrink(_ drink: Drink) throws {
-        if drink.getPrice() > deposit {
+        if drink.getPrice() > getTotalMoney() {
             throw BuyError.notEnoughMoney
         }
-        deposit -= drink.getPrice()
-    }
-    
-    private func calculateCointCount(_ base: Int) -> Int {
-        var totalCoinCount: Int = 0
-        if deposit / base > 0 {
-            totalCoinCount += Int(deposit / base)
-            deposit -= (Int(deposit / base) * base)
-        }
-        return totalCoinCount
+        coin.getDrink(drink)
     }
     
     func getCoinsCount(_ unit: Int) -> Int {
-        return calculateCointCount(unit)
+        guard let coin = Coin.CoinUnit(rawValue: unit) else {
+            return 0
+        }
+        return self.coin.calculateCoinCount(coin)
     }
 }
 
