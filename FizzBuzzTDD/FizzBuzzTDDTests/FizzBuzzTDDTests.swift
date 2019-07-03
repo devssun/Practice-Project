@@ -18,6 +18,11 @@ class FizzBuzz {
     func is3MultipleNumber() -> String {
         return number % 3 == 0 ? "Fizz" : ""
     }
+    
+    
+    func is5MultipleNumber() -> String {
+        return number % 5 == 0 ? "Buzz" : ""
+    }
 }
 
 class FizzBuzzTDDTests: XCTestCase {
