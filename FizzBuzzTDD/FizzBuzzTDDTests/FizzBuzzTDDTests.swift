@@ -36,4 +36,9 @@ class FizzBuzzTDDTests: XCTestCase {
         let fizzBuzz = FizzBuzz(3)
         XCTAssertEqual(fizzBuzz.is3MultipleNumber(), "Fizz")
     }
+    
+    func testIs5MultipleNumber() {
+        let fizzBuzz = FizzBuzz(5)
+        XCTAssertEqual(fizzBuzz.is5MultipleNumber(), "Buzz")
+    }
 }
