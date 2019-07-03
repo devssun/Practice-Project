@@ -8,6 +8,18 @@
 
 import XCTest
 
+class FizzBuzz {
+    private var number: Int = 0
+    
+    init(_ number: Int) {
+        self.number = number
+    }
+    
+    func is3MultipleNumber() -> String {
+        return number % 3 == 0 ? "Fizz" : ""
+    }
+}
+
 class FizzBuzzTDDTests: XCTestCase {
 
     override func setUp() {
