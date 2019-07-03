@@ -16,11 +16,11 @@ class FizzBuzz {
     }
     
     func checkCurrentNumber() -> String {
-        if (number % 3 == 0) && (number % 5 == 0) {
+        if isMultiplyNumber(3) && isMultiplyNumber(5) {
             return "FizzBuzz"
-        }else if number % 3 == 0 {
+        }else if isMultiplyNumber(3) {
             return "Fizz"
-        }else if number % 5 == 0 {
+        }else if isMultiplyNumber(5) {
             return "Buzz"
         }else{
             return "\(number)"
@@ -28,17 +28,21 @@ class FizzBuzz {
     }
 
     func is3MultipleNumber() -> String {
-        return number % 3 == 0 ? "Fizz" : ""
+        return isMultiplyNumber(3) ? "Fizz" : "\(number)"
     }
     
     
     func is5MultipleNumber() -> String {
-        return number % 5 == 0 ? "Buzz" : ""
+        return isMultiplyNumber(5) ? "Buzz" : "\(number)"
     }
     
     
     func is3and5MultipleNumber() -> String {
-        return (number % 5 == 0 && number % 3 == 0) ? "FizzBuzz" : ""
+        return isMultiplyNumber(3) && isMultiplyNumber(5) ? "FizzBuzz" : "\(number)"
+    }
+    
+    func isMultiplyNumber(_ multiply: Int) -> Bool {
+        return number % multiply == 0
     }
 }
 
